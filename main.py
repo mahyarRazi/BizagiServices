@@ -1,23 +1,20 @@
 import typing as optional
 from  fastapi import FastAPI,status,Response
+from router import BizagiServices_Post
+from typing import List, Dict
+from pydantic import BaseModel
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from enum import Enum
 from sqlalchemy.orm import sessionmaker
 from prettytable import PrettyTable
-from typing import List, Dict
-from pydantic import BaseModel
-
-
-
-
-
-
-
-
-
+from fastapi.encoders import jsonable_encoder
 
 app = FastAPI()
+
+app.include_router(BizagiServices_Post.router)
+
+
 
 # class ServiceNumberEnum(str, Enum):
 #     type1 = '1'
@@ -111,47 +108,12 @@ app = FastAPI()
 
 # Test the connection
 
-class Item(BaseModel):
-    coloumn1: str
-    coloumn2: str=None
-    coloumn3: str=None
 
 
 
-@app.post('/BizagiServices/checkDuplicate')
-def get_duplicated(items:List[Item]):
-    result =[]
-    count=0
-    result = "false"
-    for i in range(len(items)):
-        string = items[i].coloumn1
-        for j in range(len(items)):
-            if items[i].coloumn1==items[j].coloumn1:
-                count+=1
-        if count>1:
-            result="true"
-        count =0
-
-    return {"Is Duplicate":result}
 
 
 
-#
-# @app.get('/BizagiServices/GetFullname')
-#
-# def get_service_number(text1:str,text2:str,text3:str):
-#     dataLists = [text1,text2,text3]
-#
-#     res= 'false'
-#     for dataList in dataLists:
-#         if text1==text2 or  text1==text3:
-#             res = 'true'
-#         if text1 == text2 or text2 == text3:
-#             res = 'true'
-#         if text1 == text3 or text2 == text3:
-#             res = 'true'
-#
-#     if res=='true':
-#         return {"Message":f"res is True"}
-#     else:
-#         return {"Message": f"res is false"}
+
+
+
